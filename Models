@@ -1,0 +1,18 @@
+package com.example.messenger.domain
+
+import java.time.Instant
+import java.util.UUID
+
+data class Chat(
+    val id: String = UUID.randomUUID().toString(),
+    val title: String,
+    val lastMessage: Message? = null
+)
+
+data class Message(
+    val id: String = UUID.randomUUID().toString(),
+    val chatId: String,
+    val sender: String,
+    val text: String,
+    val sentAt: Instant = Instant.now(),
+    val isMine: Boolean
