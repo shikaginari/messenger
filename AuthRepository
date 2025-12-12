@@ -1,0 +1,15 @@
+package com.example.messenger.domain
+
+import kotlinx.coroutines.flow.StateFlow
+
+interface AuthRepository {
+    val isLoggedIn: StateFlow<Boolean>
+    suspend fun login(user: String, pass: String): Boolean
+}
+
+interface ChatRepository {
+    suspend fun startNewChat(): Chat
+    fun observeChats(): kotlinx.coroutines.flow.Flow<List<Chat>>
+    fun observeMessages(chatId: String): kotlinx.coroutines.flow.Flow<List<Message>>
+    suspend fun sendMessage(chatId: String, text: String)
+}
