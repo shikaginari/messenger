@@ -1,0 +1,46 @@
+package com.example.messenger.data.remote
+
+import kotlinx.coroutines.delay
+import java.time.Instant
+import java.util.UUID
+import kotlin.random.Random
+
+data class RemoteMessage(
+    val id: String,
+    val chatId: String,
+    val sender: String,
+    val text: String,
+    val sentAt: Instant
+)
+
+class FakeApi {
+    private val chats = mutableListOf<Pair<String, String>>() // id to title
+
+    suspend fun login(user: String, pass: String): Boolean {
+        delay(400)
+        return pass.isNotBlank()
+    }
+
+    suspend fun createChat(): Pair<String, String> {
+        delay(200)
+        val id = UUID.randomUUID().toString()
+        val title = "Chat ${Random.nextInt(100)}"
+        chats += id to title
+        return id to title
+    }
+
+    suspend fun listChats(): List<Pair<String, String>> {
+        delay(200)
+        return chats.ifEmpty { listOf(createChat()) }
+    }
+
+    suspend fun sendMessage(chatId: String, sender: String, text: String): RemoteMessage {
+        delay(120)
+        return RemoteMessage(UUID.randomUUID().toString(), chatId, sender, text, Instant.now())
+    }
+
+    suspend fun fetchMessages(chatId: String): List<RemoteMessage> {
+        delay(100)
+        return emptyList()
+    }
+}
